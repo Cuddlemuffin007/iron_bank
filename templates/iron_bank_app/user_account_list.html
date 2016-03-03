@@ -2,8 +2,11 @@
 
 {% block content %}
     {% if request.user.is_authenticated %}
-        <h1>Welcome, {{ user.username }}</h1>
+        <h1>Welcome, {{ request.user.username }}</h1>
         <p>Here are your account details</p>
+        {% for object in object_list %}
+        <p>{{ object.description }} {{ object.balance }} {{ object.account_created }}</p>
+        {% endfor %}
     {% else %}
         <h1>No no no. Get outta here!</h1>
     {% endif %}

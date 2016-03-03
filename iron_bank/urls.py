@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
-from iron_bank_app.views import IndexView, SignUpView, AccountDetailView
+from iron_bank_app.views import IndexView, SignUpView, AccountListView, AccountCreateView, AccountDetailView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -24,5 +24,7 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, name='login_view'),
     url(r'^logout/$', auth_views.logout_then_login, name='logout_view'),
     url(r'^signup/$', SignUpView.as_view(), name='sign_up_view'),
-    url(r'^account/$', AccountDetailView.as_view(), name='account_detail_view')
+    url(r'^account/create/$', AccountCreateView.as_view(), name='account_create_view'),
+    url(r'^account/$', AccountListView.as_view(), name='account_list_view'),
+    url(r'^account/details/(?P<pk>\d+)$', AccountDetailView.as_view(), name='account_detail_view')
 ]
