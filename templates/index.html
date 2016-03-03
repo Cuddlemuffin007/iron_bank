@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div>
+        <p>Please <a href="{% url 'login_view' %}">login</a></p>
+        <p>or</p>
+        <a href="{% url 'sign_up_view' %}"><p>Create an Account</p></a>
+    </div>
+{% endblock %}
