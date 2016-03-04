@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1> Sorry </h1>
+    <p>Your request couldn't be processed due to insufficient funds.</p>
+    <a href="{% url 'account_list_view' %}">Back to My Accounts</a>
+
+{% endblock %}

@@ -1,10 +1,12 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, CreateView, DetailView, ListView
 
-from iron_bank_app.models import Account
+from iron_bank_app.models import Account, Transaction
+
 
 class LimitedAccessMixin:
 
@@ -49,13 +51,34 @@ class AccountDetailView(LimitedAccessMixin, DetailView):
     model = Account
 
 
+class TransactionCreateView(CreateView):
+    model = Transaction
+    fields = ('amount', 'description', 'transaction_type')
+
+    def form_invalid(self, form):
+        return redirect('overdraft_notice')
+
+    def form_valid(self, form):
+        transaction_object = form.save(commit=False)
+        transaction_object.account = Account.objects.get(pk=self.kwargs['pk'])
+        if transaction_object.amount < 0:
+            return super().form_invalid(form)
+
+        if transaction_object.transaction_type == 'd':
+            transaction_object.account.balance += transaction_object.amount
+        elif transaction_object.transaction_type == 'w':
+            if transaction_object.amount > transaction_object.account.balance:
+                return self.form_invalid(form)
+            else:
+                transaction_object.account.balance -= transaction_object.amount
+
+        transaction_object.account.save()
+        transaction_object.save()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('account_detail_view', args=(self.kwargs['pk'],))
 
 
-
-
-
-
-
-
-
-
+def overdraft_notice_view(request):
+    return render(request, 'overdraft.html')

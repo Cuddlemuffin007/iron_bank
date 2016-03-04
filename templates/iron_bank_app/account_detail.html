@@ -16,5 +16,7 @@
       <div class="col s4">{{ object.account_created }}</div>
     </div>
 
+    <a class="btn" href="{% url 'create_transaction_view' object.pk %}">Make Transaction</a>
+
 {% endblock %}
 
