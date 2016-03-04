@@ -1,14 +1,51 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="UTF-8"/>
     <title>Iron Bank App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
 </head>
 <body>
-<div class="container">
-    <h1>Hello from base.html</h1>
-    {% block content %}
-    {% endblock %}
-</div>
+    {% if request.user.is_authenticated %}
+        <div class="navbar-fixed">
+            <nav>
+                <div class="nav-wrapper">
+                    <a class="brand-logo" href="{% url 'index_view' %}">Iron Bank</a>
+                    <ul class="right hide-on-med-and-down">
+                        <li><a href="{% url 'account_list_view' %}">My Accounts</a></li>
+                        <li><a href="{% url 'account_create_view' %}">Create an Account</a></li>
+                        <li><a href="{% url 'logout_view' %}">Logout</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    {% else %}
+        <div class="navbar-fixed">
+            <nav>
+                <div class="nav-wrapper">
+                    <ul class="right hide-on-med-and-down">
+                        <li><a href="{% url 'login_view' %}">Login</a></li>
+                        <li><a href="{% url 'sign_up_view' %}">Sign Up</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    {% endif %}
+
+    <div class="container">
+
+        {% block index_content %}
+        {% endblock %}
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
 </body>
 </html>

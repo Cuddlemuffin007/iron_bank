@@ -1,6 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    Account Details
-    {{ object.customer }} {{ object.balance }} {{ object.account_created }}
+
+    <h3 class="username">{{ object.customer }}'s Accounts</h3>
+
+    <div class="row headers">
+      <div class="col s4">Account Nickname</div>
+      <div class="col s4">Current Balance</div>
+      <div class="col s4">Account Created</div>
+    </div>
+
+    <div class="row">
+      <div class="col s4">{{ object.nickname }}</div>
+      <div class="col s4">{{ object.balance }}</div>
+      <div class="col s4">{{ object.account_created }}</div>
+    </div>
+
 {% endblock %}
+

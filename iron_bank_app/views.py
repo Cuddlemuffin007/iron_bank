@@ -6,6 +6,11 @@ from django.views.generic import TemplateView, CreateView, DetailView, ListView
 
 from iron_bank_app.models import Account
 
+class LimitedAccessMixin:
+
+    def get_queryset(self):
+        return self.model.objects.filter(customer=self.request.user)
+
 
 class IndexView(TemplateView):
     template_name = 'index.html'
@@ -21,11 +26,13 @@ class SignUpView(CreateView):
 
 class AccountCreateView(CreateView):
     model = Account
-    fields = ('description',)
+    fields = ('nickname', 'initial_balance')
 
     def form_valid(self, form):
         object = form.save(commit=False)
         object.customer = self.request.user
+        if object.initial_balance > 0:
+            object.balance = object.initial_balance
         object.save()
         return super().form_valid(form)
 
@@ -33,19 +40,15 @@ class AccountCreateView(CreateView):
         return reverse('account_list_view')
 
 
-class AccountListView(ListView):
+class AccountListView(LimitedAccessMixin, ListView):
     model = Account
     template_name = 'iron_bank_app/user_account_list.html'
 
-    def get_queryset(self):
-        return Account.objects.filter(customer=self.request.user)
 
-
-class AccountDetailView(DetailView):
+class AccountDetailView(LimitedAccessMixin, DetailView):
     model = Account
 
-    def get_queryset(self):
-        return Account.objects.filter(customer=self.request.user)
+
 
 
 

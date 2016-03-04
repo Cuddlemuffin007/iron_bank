@@ -1,0 +1,32 @@
+.username {
+    text-transform: capitalize;
+    text-align: center;
+}
+
+.headers {
+    font-weight: bold;
+}
+
+.index-banner {
+    padding: 50px;
+    margin-top: 2em;
+    text-align: center;
+    color: #FFF;
+    background-image: url("/static/img/braavos.jpg");
+}
+
+.details {
+    width: 35%;
+    display: inline;
+}
+
+.transactions {
+    width: 35%;
+    display: inline;
+    float: right;
+    clear: both;
+}
+
+.brand-logo {
+    margin-left: 20px;
+}

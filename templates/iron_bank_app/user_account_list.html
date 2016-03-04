@@ -2,10 +2,22 @@
 
 {% block content %}
     {% if request.user.is_authenticated %}
-        <h1>Welcome, {{ request.user.username }}</h1>
-        <p>Here are your account details</p>
-        {% for object in object_list %}
-        <p>{{ object.description }} {{ object.balance }} {{ object.account_created }}</p>
+        <h1 class="username">Welcome, {{ request.user.username }}</h1>
+
+        <div class="row headers">
+            <div class="col s4">Account Nickname</div>
+            <div class="col s4">Current Balance</div>
+            <div class="col s4">Account Created</div>
+        </div>
+
+        {% for account in object_list %}
+        <div class="row">
+            <a href="{% url 'account_detail_view' account.pk %}">
+                <div class="col s4">{{ account.nickname }}</div>
+            </a>
+            <div class="col s4">{{ account.balance }}</div>
+            <div class="col s4">{{ account.account_created }}</div>
+        </div>
         {% endfor %}
     {% else %}
         <h1>No no no. Get outta here!</h1>
