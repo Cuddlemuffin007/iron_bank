@@ -56,6 +56,7 @@ class TransactionCreateView(CreateView):
     fields = ('amount', 'description', 'transaction_type')
 
     def form_invalid(self, form):
+        # form.add_error('amount', 'The amount must be a positive value')
         return redirect('overdraft_notice')
 
     def form_valid(self, form):
@@ -78,6 +79,19 @@ class TransactionCreateView(CreateView):
 
     def get_success_url(self):
         return reverse('account_detail_view', args=(self.kwargs['pk'],))
+
+
+class TransactionListView(ListView):
+    model = Transaction
+
+    def get_queryset(self):
+        account = Account.objects.get(pk=self.kwargs['pk'])
+        return self.model.objects.filter(account=account)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['account'] = Account.objects.get(pk=self.kwargs['pk'])
+        return context
 
 
 def overdraft_notice_view(request):

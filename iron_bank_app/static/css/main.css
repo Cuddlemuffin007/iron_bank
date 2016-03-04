@@ -32,6 +32,10 @@
 }
 
 select {
-    /*important because materialize thinks display should be none for select elements*/
-    display: inline!important;
+    /*because materialize thinks display should be none for select elements*/
+    display: inline;
+}
+
+.capitalize {
+    text-transform: capitalize;
 }

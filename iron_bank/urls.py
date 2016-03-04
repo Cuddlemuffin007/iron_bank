@@ -17,7 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from iron_bank_app.views import IndexView, SignUpView, AccountListView, AccountCreateView, \
-    AccountDetailView, TransactionCreateView, overdraft_notice_view
+    AccountDetailView, TransactionCreateView, overdraft_notice_view, TransactionListView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -27,7 +27,8 @@ urlpatterns = [
     url(r'^signup/$', SignUpView.as_view(), name='sign_up_view'),
     url(r'^account/create/$', AccountCreateView.as_view(), name='account_create_view'),
     url(r'^account/$', AccountListView.as_view(), name='account_list_view'),
-    url(r'^account/details/(?P<pk>\d+)$', AccountDetailView.as_view(), name='account_detail_view'),
-    url(r'^account/(?P<pk>\d+)/transaction/$', TransactionCreateView.as_view(), name='create_transaction_view'),
+    url(r'^account/(?P<pk>\d+)/details/$', AccountDetailView.as_view(), name='account_detail_view'),
+    url(r'^account/(?P<pk>\d+)/create_transaction/$', TransactionCreateView.as_view(), name='create_transaction_view'),
+    url(r'^account/(?P<pk>\d+)/transactions/$', TransactionListView.as_view(), name='transaction_list_view'),
     url(r'^uh_ohs/', overdraft_notice_view, name='overdraft_notice')
 ]
