@@ -14,7 +14,13 @@
             <nav>
                 <div class="nav-wrapper">
                     <a class="brand-logo" href="{% url 'index_view' %}">Iron Bank</a>
+                    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                     <ul class="right hide-on-med-and-down">
+                        <li><a href="{% url 'account_list_view' %}">My Accounts</a></li>
+                        <li><a href="{% url 'account_create_view' %}">Create an Account</a></li>
+                        <li><a href="{% url 'logout_view' %}">Logout</a></li>
+                    </ul>
+                    <ul id="mobile-demo" class="side-nav">
                         <li><a href="{% url 'account_list_view' %}">My Accounts</a></li>
                         <li><a href="{% url 'account_create_view' %}">Create an Account</a></li>
                         <li><a href="{% url 'logout_view' %}">Logout</a></li>
@@ -26,7 +32,12 @@
         <div class="navbar-fixed">
             <nav>
                 <div class="nav-wrapper">
+                    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                     <ul class="right hide-on-med-and-down">
+                        <li><a href="{% url 'login_view' %}">Login</a></li>
+                        <li><a href="{% url 'sign_up_view' %}">Sign Up</a></li>
+                    </ul>
+                    <ul class="side-nav" id="mobile-demo">
                         <li><a href="{% url 'login_view' %}">Login</a></li>
                         <li><a href="{% url 'sign_up_view' %}">Sign Up</a></li>
                     </ul>
@@ -47,5 +58,6 @@
 
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+  <script type="text/javascript" src="{% static 'js/app.js' %}"></script>
 </body>
 </html>

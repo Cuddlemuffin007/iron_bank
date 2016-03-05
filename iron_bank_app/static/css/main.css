@@ -1,5 +1,17 @@
+.nav-wrapper {
+    background-color: slategray;
+}
+
 .username {
     text-transform: capitalize;
+    text-align: center;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.balance {
     text-align: center;
 }
 
@@ -38,4 +50,13 @@ select {
 
 .capitalize {
     text-transform: capitalize;
+}
+
+small {
+    font-size: medium;
+}
+
+.page-nav {
+    text-align: center;
+    padding-top: 2em;
 }

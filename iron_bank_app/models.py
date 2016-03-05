@@ -15,11 +15,12 @@ class Account(models.Model):
 class Transaction(models.Model):
     account = models.ForeignKey(Account)
     amount = models.DecimalField(decimal_places=2, max_digits=10)
-    description = models.CharField(max_length=20, blank=True)
+    description = models.CharField(max_length=20, default='None')
     transaction_type = models.CharField(max_length=10, choices=CHOICES)
     destination_account_id = models.IntegerField(null=True, blank=True)
     post_date = models.DateTimeField(auto_now_add=True)
 
-
+    class Meta:
+        ordering = ['-post_date']
 
 

@@ -2,7 +2,10 @@
 
 {% block content %}
 
-    <h3 class="username">Transactions for {{ account.nickname }} Account</h3>
+    <h3 class="username">
+        Transactions for {{ account.nickname }} Account
+        <br><small>(Last 30 days)</small>
+    </h3>
 
     <div class="row headers">
         <div class="col s2">Transaction ID</div>
@@ -20,6 +23,10 @@
             <div class="col s2">{{ transaction.post_date }}</div>
         </div>
     {% endfor %}
+
+    <div class="page-nav">
+        <a class="btn" href="{% url 'account_list_view' %}">Back to My Accounts</a>
+    </div>
 {% endblock %}
 
 

@@ -31,11 +31,11 @@ class AccountCreateView(CreateView):
     fields = ('nickname', 'initial_balance')
 
     def form_valid(self, form):
-        object = form.save(commit=False)
-        object.customer = self.request.user
-        if object.initial_balance > 0:
-            object.balance = object.initial_balance
-        object.save()
+        account_object = form.save(commit=False)
+        account_object.customer = self.request.user
+        if account_object.initial_balance > 0:
+            account_object.balance = account_object.initial_balance
+        account_object.save()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -62,32 +62,31 @@ class TransactionCreateView(CreateView):
     def form_valid(self, form):
         transaction_object = form.save(commit=False)
         transaction_object.account = Account.objects.get(pk=self.kwargs['pk'])
-        if transaction_object.amount < 0:
+        if transaction_object.amount <= 0:
             return super().form_invalid(form)
-
-        if not transaction_object.description:
-            transaction_object.description = 'None'
 
         if transaction_object.transaction_type == 'd':
             transaction_object.account.balance += transaction_object.amount
+
         elif transaction_object.transaction_type == 'w':
             if transaction_object.amount > transaction_object.account.balance:
                 return self.form_invalid(form)
             else:
                 transaction_object.account.balance -= transaction_object.amount
-        elif transaction_object.transaction_type =='t':
+
+        elif transaction_object.transaction_type == 't':
             try:
                 destination_account = Account.objects.get(pk=transaction_object.destination_account_id)
             except Exception:
                 return super().form_invalid(form)
 
-            if transaction_object.account == destination_account or transaction_object.account.balance < 0:
+            if transaction_object.account == destination_account or transaction_object.account.balance <= 0:
                 return super().form_invalid(form)
             else:
                 transaction_object.account.balance -= transaction_object.amount
                 destination_account.balance += transaction_object.amount
-                Transaction.objects.create(account=Account.objects.get(pk=transaction_object.destination_account_id),
-                                           amount=transaction_object.amount, transaction_type='t', description='received transfer')
+                Transaction.objects.create(account=destination_account, amount=transaction_object.amount,
+                                           transaction_type='t', description='received transfer')
                 destination_account.save()
 
         transaction_object.account.save()
@@ -104,11 +103,15 @@ class TransactionListView(ListView):
     def get_queryset(self):
         account = Account.objects.get(pk=self.kwargs['pk'])
         start_date = date.today() - timedelta(days=30)
-        return self.model.objects.filter(account=account, account__transaction__post_date__gte=start_date)
+        return self.model.objects.filter(account=account,
+                                         account__transaction__post_date__gte=start_date).order_by('-post_date')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['account'] = Account.objects.get(pk=self.kwargs['pk'])
+        # for whatever reason object list was containing dupes of the same instances
+        context['object_list'] = set(context['object_list'])
+
         return context
 
 

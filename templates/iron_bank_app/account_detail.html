@@ -4,19 +4,27 @@
 
     <h3 class="username">Account Details</h3>
 
+    <div class="row">
+        <div class="col s6"><h3>Current Balance</h3></div>
+        <div class="col s6"><h1 class="balance">{{ object.balance }}</h1></div>
+    </div>
+
     <div class="row headers">
-      <div class="col s4">Account Nickname</div>
-      <div class="col s4">Current Balance</div>
-      <div class="col s4">Account Created</div>
+        <div class="col s4">Account Holder</div>
+        <div class="col s4">Account Nickname</div>
+        <div class="col s4">Account Created</div>
     </div>
 
     <div class="row">
-      <div class="col s4">{{ object.nickname }}</div>
-      <div class="col s4">{{ object.balance }}</div>
-      <div class="col s4">{{ object.account_created }}</div>
+        <div class="col s4 username align-left">{{ object.customer.username }}</div>
+        <div class="col s4">{{ object.nickname }}</div>
+        <div class="col s4">{{ object.account_created }}</div>
     </div>
-
-    <a class="btn" href="{% url 'create_transaction_view' object.pk %}">Make Transaction</a>
+    <div class="page-nav">
+        <a class="btn" href="{% url 'create_transaction_view' object.pk %}">Make Transaction</a>
+        <a class="btn" href="{% url 'transaction_list_view' object.pk %}">View Transaction History</a>
+        <a class="btn" href="{% url 'account_list_view' %}">Back to My Accounts</a>
+    </div>
 
 {% endblock %}
 
