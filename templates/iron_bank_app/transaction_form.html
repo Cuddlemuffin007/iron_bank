@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input class="btn" type="submit" value="Complete Transaction">
-    </form>
+    {% if transaction.account.customer == request.user %}
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn" type="submit" value="Complete Transaction">
+        </form>
+        {% else %}
+            <h1>Please <a href="{% url 'login_view' %}">login</a> to make a transaction.</h1>
+        {% endif %}
 {% endblock %}

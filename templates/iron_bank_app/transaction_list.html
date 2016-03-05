@@ -2,6 +2,7 @@
 
 {% block content %}
 
+{% if request.user == account.customer %}
     <h3 class="username">
         Transactions for {{ account.nickname }} Account
         <br><small>(Last 30 days)</small>
@@ -27,6 +28,10 @@
     <div class="page-nav">
         <a class="btn" href="{% url 'account_list_view' %}">Back to My Accounts</a>
     </div>
+{% else %}
+        <h1>Please <a href="{% url 'login_view' %}">login</a></h1>
+{% endif %}
+
 {% endblock %}
 
 
