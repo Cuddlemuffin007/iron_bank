@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-CHOICES = [('d', 'deposit'), ('w', 'withdrawal')]
+CHOICES = [('d', 'deposit'), ('w', 'withdrawal'), ('t', 'transfer')]
 
 
 class Account(models.Model):
@@ -17,5 +17,9 @@ class Transaction(models.Model):
     amount = models.DecimalField(decimal_places=2, max_digits=10)
     description = models.CharField(max_length=20, blank=True)
     transaction_type = models.CharField(max_length=10, choices=CHOICES)
+    destination_account_id = models.IntegerField(null=True, blank=True)
     post_date = models.DateTimeField(auto_now_add=True)
+
+
+
 

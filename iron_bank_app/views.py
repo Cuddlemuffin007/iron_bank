@@ -53,7 +53,7 @@ class AccountDetailView(LimitedAccessMixin, DetailView):
 
 class TransactionCreateView(CreateView):
     model = Transaction
-    fields = ('amount', 'description', 'transaction_type')
+    fields = ('amount', 'description', 'transaction_type', 'destination_account_id')
 
     def form_invalid(self, form):
         # form.add_error('amount', 'The amount must be a positive value')
@@ -72,6 +72,20 @@ class TransactionCreateView(CreateView):
                 return self.form_invalid(form)
             else:
                 transaction_object.account.balance -= transaction_object.amount
+        elif transaction_object.transaction_type =='t':
+            try:
+                destination_account = Account.objects.get(pk=transaction_object.destination_account_id)
+            except Exception:
+                return super().form_invalid(form)
+
+            if transaction_object.account == destination_account or transaction_object.account.balance < 0:
+                return super().form_invalid(form)
+            else:
+                transaction_object.account.balance -= transaction_object.amount
+                destination_account.balance += transaction_object.amount
+                Transaction.objects.create(account=Account.objects.get(pk=transaction_object.destination_account_id),
+                                           amount=transaction_object.amount, transaction_type='t')
+                destination_account.save()
 
         transaction_object.account.save()
         transaction_object.save()
