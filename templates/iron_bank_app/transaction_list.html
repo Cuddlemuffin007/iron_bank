@@ -5,17 +5,19 @@
     <h3 class="username">Transactions for {{ account.nickname }} Account</h3>
 
     <div class="row headers">
-        <div class="col s3">Transaction ID</div>
-        <div class="col s3">Transaction Type</div>
-        <div class="col s3">Amount</div>
-        <div class="col s3">Post Date</div>
+        <div class="col s2">Transaction ID</div>
+        <div class="col s2">Transaction Type</div>
+        <div class="col s2">Description</div>
+        <div class="col s2">Amount</div>
+        <div class="col s2">Post Date</div>
     </div>
     {% for transaction in object_list %}
         <div class="row">
-            <div class="col s3">{{ transaction.pk }}</div>
-            <div class="col s3 capitalize">{{ transaction.get_transaction_type_display }}</div>
-            <div class="col s3">{{ transaction.amount }}</div>
-            <div class="col s3">{{ transaction.post_date }}</div>
+            <div class="col s2">{{ transaction.pk }}</div>
+            <div class="col s2 capitalize">{{ transaction.get_transaction_type_display }}</div>
+            <div class="col s2">{{ transaction.description }}</div>
+            <div class="col s2">{{ transaction.amount }}</div>
+            <div class="col s2">{{ transaction.post_date }}</div>
         </div>
     {% endfor %}
 {% endblock %}

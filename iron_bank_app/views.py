@@ -1,9 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, CreateView, DetailView, ListView
+from datetime import date, timedelta
 
 from iron_bank_app.models import Account, Transaction
 
@@ -65,6 +65,9 @@ class TransactionCreateView(CreateView):
         if transaction_object.amount < 0:
             return super().form_invalid(form)
 
+        if not transaction_object.description:
+            transaction_object.description = 'None'
+
         if transaction_object.transaction_type == 'd':
             transaction_object.account.balance += transaction_object.amount
         elif transaction_object.transaction_type == 'w':
@@ -84,7 +87,7 @@ class TransactionCreateView(CreateView):
                 transaction_object.account.balance -= transaction_object.amount
                 destination_account.balance += transaction_object.amount
                 Transaction.objects.create(account=Account.objects.get(pk=transaction_object.destination_account_id),
-                                           amount=transaction_object.amount, transaction_type='t')
+                                           amount=transaction_object.amount, transaction_type='t', description='received transfer')
                 destination_account.save()
 
         transaction_object.account.save()
@@ -100,7 +103,8 @@ class TransactionListView(ListView):
 
     def get_queryset(self):
         account = Account.objects.get(pk=self.kwargs['pk'])
-        return self.model.objects.filter(account=account)
+        start_date = date.today() - timedelta(days=30)
+        return self.model.objects.filter(account=account, account__transaction__post_date__gte=start_date)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
