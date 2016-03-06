@@ -7,7 +7,8 @@
             {{ form.as_p }}
             <input class="btn" type="submit" value="Complete Transaction">
         </form>
-        {% else %}
-            <h1>Please <a href="{% url 'login_view' %}">login</a> to make a transaction.</h1>
-        {% endif %}
+    {% else %}
+        <h1>Oops, we can't find this page.</h1>
+        <h4>Return <a href="{% url 'account_list_view' %}">home</a></h4>
+    {% endif %}
 {% endblock %}

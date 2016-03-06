@@ -2,35 +2,36 @@
 
 {% block content %}
 
-{% if request.user == account.customer %}
-    <h3 class="username">
-        Transactions for {{ account.nickname }} Account
-        <br><small>(Last 30 days)</small>
-    </h3>
+    {% if request.user == account.customer %}
+        <h3 class="username">
+            Transactions for {{ account.nickname }} Account
+            <br><small>(Last 30 days)</small>
+        </h3>
 
-    <div class="row headers">
-        <div class="col s2">Transaction ID</div>
-        <div class="col s2">Transaction Type</div>
-        <div class="col s2">Description</div>
-        <div class="col s2">Amount</div>
-        <div class="col s2">Post Date</div>
-    </div>
-    {% for transaction in object_list %}
-        <div class="row">
-            <div class="col s2">{{ transaction.pk }}</div>
-            <div class="col s2 capitalize">{{ transaction.get_transaction_type_display }}</div>
-            <div class="col s2">{{ transaction.description }}</div>
-            <div class="col s2">{{ transaction.amount }}</div>
-            <div class="col s2">{{ transaction.post_date }}</div>
+        <div class="row headers">
+            <div class="col s2">Transaction ID</div>
+            <div class="col s2">Transaction Type</div>
+            <div class="col s2">Description</div>
+            <div class="col s2">Amount</div>
+            <div class="col s2">Post Date</div>
         </div>
-    {% endfor %}
+        {% for transaction in object_list %}
+            <div class="row">
+                <div class="col s2">{{ transaction.pk }}</div>
+                <div class="col s2 capitalize">{{ transaction.get_transaction_type_display }}</div>
+                <div class="col s2">{{ transaction.description }}</div>
+                <div class="col s2">{{ transaction.amount }}</div>
+                <div class="col s2">{{ transaction.post_date }}</div>
+            </div>
+        {% endfor %}
 
-    <div class="page-nav">
-        <a class="btn" href="{% url 'account_list_view' %}">Back to My Accounts</a>
-    </div>
-{% else %}
-        <h1>Please <a href="{% url 'login_view' %}">login</a></h1>
-{% endif %}
+        <div class="page-nav">
+            <a class="btn" href="{% url 'account_list_view' %}">Back to My Accounts</a>
+        </div>
+    {% else %}
+        <h1>Oops, we can't find this page.</h1>
+        <h4>Return <a href="{% url 'account_list_view' %}">home</a></h4>
+    {% endif %}
 
 {% endblock %}
 

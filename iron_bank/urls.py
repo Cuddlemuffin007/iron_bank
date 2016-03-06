@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
+
 from iron_bank_app.views import IndexView, SignUpView, AccountListView, AccountCreateView, \
     AccountDetailView, TransactionCreateView, overdraft_notice_view, TransactionListView
 
@@ -25,10 +27,10 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, name='login_view'),
     url(r'^logout/$', auth_views.logout_then_login, name='logout_view'),
     url(r'^signup/$', SignUpView.as_view(), name='sign_up_view'),
-    url(r'^account/create/$', AccountCreateView.as_view(), name='account_create_view'),
-    url(r'^account/$', AccountListView.as_view(), name='account_list_view'),
-    url(r'^account/(?P<pk>\d+)/details/$', AccountDetailView.as_view(), name='account_detail_view'),
-    url(r'^account/(?P<pk>\d+)/create_transaction/$', TransactionCreateView.as_view(), name='create_transaction_view'),
-    url(r'^account/(?P<pk>\d+)/transactions/$', TransactionListView.as_view(), name='transaction_list_view'),
+    url(r'^account/create/$', login_required(AccountCreateView.as_view()), name='account_create_view'),
+    url(r'^account/$', login_required(AccountListView.as_view()), name='account_list_view'),
+    url(r'^account/(?P<pk>\d+)/details/$', login_required(AccountDetailView.as_view()), name='account_detail_view'),
+    url(r'^account/(?P<pk>\d+)/create_transaction/$', login_required(TransactionCreateView.as_view()), name='create_transaction_view'),
+    url(r'^account/(?P<pk>\d+)/transactions/$', login_required(TransactionListView.as_view()), name='transaction_list_view'),
     url(r'^uh_ohs/', overdraft_notice_view, name='overdraft_notice')
 ]
