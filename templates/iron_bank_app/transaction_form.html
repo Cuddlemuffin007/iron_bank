@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% if transaction.account.customer == request.user %}
+    {% if request.user == account.customer %}
         <form action="" method="post">
             {% csrf_token %}
             {{ form.as_p }}

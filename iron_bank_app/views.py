@@ -55,6 +55,12 @@ class TransactionCreateView(CreateView):
     model = Transaction
     fields = ('amount', 'description', 'transaction_type', 'destination_account_id')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        account = Account.objects.get(pk=self.kwargs['pk'])
+        context['account'] = account
+        return context
+
     def form_invalid(self, form):
         # form.add_error('amount', 'The amount must be a positive value')
         return redirect('overdraft_notice')
